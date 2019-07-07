@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-public class MainActivity extends AppCompatActivity implements  JoystickView.JoystickListener{
+public class MainActivity extends AppCompatActivity implements JoystickView.JoystickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
