@@ -55,22 +55,22 @@ public class JoystickView extends SurfaceView implements SurfaceHolder.Callback,
         if(getHolder().getSurface().isValid()){
             Canvas myCanvas = this.getHolder().lockCanvas();
             Paint colors = new Paint();
-            myCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+            myCanvas.drawColor(Color.GRAY,  PorterDuff.Mode.CLEAR);
 
             float hipo = (float) Math.sqrt(Math.pow(newX - centerX, 2) + Math.pow(newY - centerY, 2));
             float sen = (newY - centerY) / hipo;
             float cos = (newX - centerX) / hipo;
 
 
-            colors.setARGB(255,100,100,100);
+            colors.setARGB(245,245,245,245);
             myCanvas.drawCircle(centerX, centerY, baseRadius, colors);
             for(int i = 1; i <= (int) (baseRadius / ratio); i++){
-                colors.setARGB(150/i,255,0,0);
+                colors.setARGB(139/i,0,0,0);
                 myCanvas.drawCircle(newX - cos * hipo * (ratio/baseRadius) *i,
                         newY - sen * hipo * (ratio/baseRadius) * i, i * (hatRadius * ratio / baseRadius), colors);
             }
             for(int i = 1; i <= (int) (hatRadius / ratio); i++){
-                colors.setARGB(255,(int)(i * (255 * ratio / hatRadius)), (int) (i * (255 * ratio / hatRadius)), 255);
+                colors.setARGB(255,(int)(i * (255 * ratio / hatRadius)), (int) (i * (10 * ratio / hatRadius)), 10);
                 myCanvas.drawCircle(newX, newY, hatRadius - (float) i * (ratio) / 2, colors);
             }
             getHolder().unlockCanvasAndPost(myCanvas);
