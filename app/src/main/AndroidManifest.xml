@@ -20,6 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+    <activity android:name=".ListDispositivos"
+        android:theme="@android:style/Theme.Dialog"
+        android:label="Dispositivos Pareados"/>
     </application>
 
 </manifest>
