@@ -3,8 +3,13 @@ package br.app.bluetoothcontrole;
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Set;
 
@@ -27,5 +32,19 @@ public class ListDispositivos extends ListActivity {
             }
         }
         setListAdapter(ArrayBluetooth);
+    }
+
+    @Override
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        String info = ((TextView) v).getText().toString();
+        //Toast.makeText(getApplicationContext(), "Info:" + info, Toast.LENGTH_LONG).show();
+        String endMac = info.substring(info.length() - 17);
+
+        Intent returnMac = new Intent();
+        returnMac.putExtra(MAC, endMac);
+        setResult(RESULT_OK, returnMac);
+        finish();
+
     }
 }
