@@ -37,7 +37,6 @@ public class ListDispositivos extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         String info = ((TextView) v).getText().toString();
-        //Toast.makeText(getApplicationContext(), "Info:" + info, Toast.LENGTH_LONG).show();
         String endMac = info.substring(info.length() - 17);
 
         Intent returnMac = new Intent();
