@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -44,16 +45,20 @@ public class MainActivity extends AppCompatActivity {
     BluetoothDevice myDevice = null;
     BluetoothSocket mySocket = null;
     ConnectedThread connectedThread;
-
+    View corFundo,btnCor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        textView1 = findViewById(R.id.textView1);
+        corFundo = findViewById(R.id.view);
+        btnCor = findViewById(R.id.btnConectar);
+        btnCor.setBackgroundColor(Color.rgb(220,220,220));
+        corFundo.setBackgroundColor(Color.rgb(192,192,192));
+        /*textView1 = findViewById(R.id.textView1);
         textView2 = findViewById(R.id.textView2);
         textView3 = findViewById(R.id.textView3);
         textView4 = findViewById(R.id.textView4);
-        textView5 = findViewById(R.id.textView5);
+        textView5 = findViewById(R.id.textView5);*/
 
         layout_joystick     = findViewById(R.id.layout_joystick);
         btnConectar         = findViewById(R.id.btnConectar);
@@ -87,52 +92,68 @@ public class MainActivity extends AppCompatActivity {
         js = new JoystickClass(getApplicationContext(), layout_joystick, R.drawable.image_button);
         js.setStickSize(150, 150);
         js.setLayoutSize(500, 500);
-        js.setLayoutAlpha(150);
-        js.setStickAlpha(100);
+        //js.setLayoutAlpha(150);
+        //js.setStickAlpha(100);
         js.setOffset(90);
         js.setMinimumDistance(50);
         layout_joystick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(conexao){
-                    connectedThread.write("");
-
                     layout_joystick.setOnTouchListener(new OnTouchListener() {
                         public boolean onTouch(View arg0, MotionEvent arg1) {
                             //js.drawStick(arg1);
                             MainActivity.this.js.drawStick(arg1);
                             if(arg1.getAction() == MotionEvent.ACTION_DOWN || arg1.getAction() == MotionEvent.ACTION_MOVE) {
-                                MainActivity.this.textView1.setText("X : " + js.getX());
+                                /*MainActivity.this.textView1.setText("X : " + js.getX());
                                 MainActivity.this.textView2.setText("Y : " + js.getY());
                                 MainActivity.this.textView3.setText("Angulo : " + js.getAngle());
-                                MainActivity.this.textView4.setText("Distancia : " + js.getDistance());
-
+                                MainActivity.this.textView4.setText("Distancia : " + js.getDistance());*/
+                                connectedThread.write("S");
                                 int direction = js.get8Direction();
                                 if(direction == JoystickClass.STICK_UP) {
-                                    textView5.setText("Direction : Up");
+                                    //textView5.setText("Direction : Up");
+                                    connectedThread.write("F");
+                                    connectedThread.write("6");
                                 } else if(direction == JoystickClass.STICK_UPRIGHT) {
-                                    textView5.setText("Direction : Up Right");
+                                    //textView5.setText("Direction : Up Right");
+                                    connectedThread.write("G");
+                                    connectedThread.write("6");
                                 } else if(direction == JoystickClass.STICK_RIGHT) {
-                                    textView5.setText("Direction : Right");
+                                    //textView5.setText("Direction : Right");
+                                    connectedThread.write("R");
+                                    connectedThread.write("6");
                                 } else if(direction == JoystickClass.STICK_DOWNRIGHT) {
-                                    textView5.setText("Direction : Down Right");
+                                    //textView5.setText("Direction : Down Right");
+                                    connectedThread.write("J");
+                                    connectedThread.write("6");
                                 } else if(direction == JoystickClass.STICK_DOWN) {
-                                    textView5.setText("Direction : Down");
+                                    //textView5.setText("Direction : Down");
+                                    connectedThread.write("B");
+                                    connectedThread.write("6");
                                 } else if(direction == JoystickClass.STICK_DOWNLEFT) {
-                                    textView5.setText("Direction : Down Left");
+                                    //textView5.setText("Direction : Down Left");
+                                    connectedThread.write("H");
+                                    connectedThread.write("6");
                                 } else if(direction == JoystickClass.STICK_LEFT) {
-                                    textView5.setText("Direction : Left");
+                                    //textView5.setText("Direction : Left");
+                                    connectedThread.write("L");
+                                    connectedThread.write("6");
                                 } else if(direction == JoystickClass.STICK_UPLEFT) {
-                                    textView5.setText("Direction : Up Left");
+                                    //textView5.setText("Direction : Up Left");
+                                    connectedThread.write("I");
+                                    connectedThread.write("6");
                                 } else if(direction == JoystickClass.STICK_NONE) {
-                                    textView5.setText("Direction : Center");
+                                    //textView5.setText("Direction : Center");
+                                    connectedThread.write("S");
                                 }
                             } else if(arg1.getAction() == MotionEvent.ACTION_UP) {
-                                textView1.setText("X :");
+                                connectedThread.write("S");
+                                /*textView1.setText("X :");
                                 textView2.setText("Y :");
                                 textView3.setText("Angulo :");
                                 textView4.setText("Distancia :");
-                                textView5.setText("Direção :");
+                                textView5.setText("Direção :");*/
                             }
                             return true;
                         }
@@ -142,17 +163,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        /*js = findViewById(R.id.joystickAnalogico);
-            js.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(conexao){
-                    connectedThread.write("");
-                }else{
-                    Toast.makeText(getApplicationContext(), "Bluetooth não está conectado", Toast.LENGTH_LONG).show();
-                }
-            }
-        });*/
         mHandler = new Handler(){
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -161,11 +171,11 @@ public class MainActivity extends AppCompatActivity {
                     String recebe = (String) msg.obj;
                     dadosBluetooth.append(recebe);
 
-                    int fimInformacao = dadosBluetooth.indexOf("F");
+                    int fimInformacao = dadosBluetooth.indexOf("}");
                     if(fimInformacao > 0){
                         String dadosCompletos = dadosBluetooth.substring(0, fimInformacao);
                         int tamanhoInformacao = dadosCompletos.length();
-                        if(dadosBluetooth.charAt(0) == 'S'){
+                        if(dadosBluetooth.charAt(0) == '}'){
                             String fullDados = dadosBluetooth.substring(1,tamanhoInformacao);
                             Log.d("Recebidos: ", fullDados);
                         }
@@ -173,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-
         };
     }
     @Override
@@ -250,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
         /* Call this from the main activity to send data to the remote device */
         public void write(/*byte[] bytes*/ String enviarDados) {
             byte[] msgBuffer = enviarDados.getBytes();
